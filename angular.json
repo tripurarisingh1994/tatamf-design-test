@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/tata-mf",
+            "outputPath": "dist/TataMF/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -27,9 +27,12 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "./node_modules/bootstrap/dist/css/bootstrap.css",
+              "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/bootstrap/dist/js/bootstrap.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -94,13 +97,70 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/TataMF/server",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "TataMF:build:development",
+              "serverTarget": "TataMF:server:development"
+            },
+            "production": {
+              "browserTarget": "TataMF:build:production",
+              "serverTarget": "TataMF:server:production"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "routes": [
+              "/"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "TataMF:build:production",
+              "serverTarget": "TataMF:server:production"
+            },
+            "development": {
+              "browserTarget": "TataMF:build:development",
+              "serverTarget": "TataMF:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }
-  },
-  "defaultProject": "TataMF"
+  }
 }

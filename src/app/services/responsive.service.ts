@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable, Subject} from "rxjs";
+import {getWindow} from "ssr-window";
 
 @Injectable()
 export class ResponsiveService {
@@ -21,7 +22,7 @@ export class ResponsiveService {
   }
 
   public checkWidth() {
-    const width = window.innerWidth;
+    const width = getWindow().innerWidth;
     if (width <= 768) {
       this.screenWidth = 'sm';
       this.onMobileChange(true);
